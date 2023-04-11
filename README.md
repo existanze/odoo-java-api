@@ -29,12 +29,18 @@ This project depends on the XMLRPC library by Apache: http://ws.apache.org/xmlrp
 
 Download the latest version from apache and extract the tar.
 
-The required jar files are:
-xmlrpc-client-3.1.3.jar
-xmlrpc-common-3.1.3.jar
-ws-commons-util-1.0.2.jar
+The required jar files are :
+* xmlrpc-client-3.1.3.jar
+* xmlrpc-common-3.1.3.jar
+* ws-commons-util-1.0.2.jar
+* jsonrpc4j
 
 Add those jar files to your classpath and you should be ok.
+
+# Compilation
+
+This is a maven project, once cloned go into the repo
+Run : ```mvn package``` or any other goal that will produce a .jar in the target folder 
 
 # Examples
 
@@ -83,6 +89,28 @@ openERPSession.executeCommandWithContext("account.move.reversal", "reverse_moves
 				);
 ```
 
+## Getting fields for audit / tracking purposes
+
+```
+// authenticate
+
+ObjectAdapter partnerAdapter = session.getObjectAdapter("res.partner");
+
+Row newPartner = partnerAdapter.getNewRow(new String[]{"name", "ref", "email", "field1", "field2"});
+newPartner.put("name", "Jhon Doe");
+newPartner.put("ref", "Reference value");
+newPartner.put("email", "personalemail@mail.com");
+newPartner.put("field1", "1");
+newPartner.put("field2", "2");
+
+partnerAdapter.createObject(newPartner);
+
+// Getting fields for tracking/audit purposes
+HashMap<String, Object> rowSaved = newPartner.getFieldsOdoo().toString();
+
+saveToDatabaseForTrackingPurpose(rowSaved);
+saveToDatabaseForTrackingPurpose(newPartner.getID());
+```
     
 # Other ressources [legacy]
 
