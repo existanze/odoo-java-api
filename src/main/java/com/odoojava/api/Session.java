@@ -299,6 +299,33 @@ public class Session {
 
 	}
 
+	public Object[] execute_kw_jsonrpc(final String objectName, String commandName, final Object[] parameters)
+			throws Throwable {
+
+		jsonclient.setServiceUrl(getJsonurl("jsonrpc"));
+		Map<String, Object> jsonparams = new HashMap<>();
+		jsonparams.put("service", "object");
+		jsonparams.put("method", "execute_kw");
+
+		ArrayList<Object> methodparams = new ArrayList<>();
+		methodparams.add(databaseName);
+		methodparams.add(userID);
+		methodparams.add(password);
+		methodparams.add(objectName);
+		methodparams.add(commandName);
+
+
+		List<Object> paramsList = new ArrayList<>(Arrays.asList(parameters));
+		Map<String, Context> c = new HashMap<>();
+		c.put("context", context);
+		methodparams.add(paramsList);
+		methodparams.add(c);
+		jsonparams.put("args", methodparams);
+		Object[] result = jsonclient.invoke("call", jsonparams, Object[].class);
+		return result;
+
+	}
+
 	void checkDatabasePresenceSafe() {
 		// 21/07/2012 - Database listing may not be enabled (--no-database-list
 		// or list_db=false).
