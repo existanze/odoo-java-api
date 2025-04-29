@@ -701,7 +701,11 @@ public class ObjectAdapter {
 
 		Response response = command.searchObject(modelName, preparedFilters, -1, -1, null, true);
 		if (response.isSuccessful()) {
-			count = Integer.parseInt(response.getResponseObject().toString());
+			if(serverVersion.getMajor() ==17){
+				count = ((Object[]) response.getResponseObject()).length;
+			}else {
+				count = Integer.parseInt(response.getResponseObject().toString());
+			}
 		}
 		return count;
 	}
