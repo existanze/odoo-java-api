@@ -701,7 +701,8 @@ public class ObjectAdapter {
 
 		Response response = command.searchObject(modelName, preparedFilters, -1, -1, null, true);
 		if (response.isSuccessful()) {
-			if(serverVersion.getMajor() ==17){
+			// From v17 the count flag is gone and search returns the id array (see OdooCommand.searchObject)
+			if(serverVersion.getMajor() >= 17){
 				count = ((Object[]) response.getResponseObject()).length;
 			}else {
 				count = Integer.parseInt(response.getResponseObject().toString());
