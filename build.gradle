@@ -6,7 +6,7 @@ apply plugin: 'groovy'
 apply plugin: 'maven-publish'
 
 group = 'com.odoojava'
-version = '3.3.7'
+version = '3.3.8'
 
 sourceCompatibility = '1.8'
 
